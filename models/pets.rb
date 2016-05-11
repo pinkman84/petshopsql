@@ -9,27 +9,14 @@ class Pet
   def initialize( options )
     @id = options[ 'id' ].to_i
     @name = options[ 'name' ]
-    @type = options[ 'type' ]
+    @pet_type = options[ 'pet_type' ]
     @image = options[ 'image' ]
     @store_id = options[ 'store_id' ].to_i
   end
 
   def save()
-    sql = "INSERT INTO pets (
-      id,
-      name,
-      type,
-      image,
-      store_id
-       ) VALUES (#{@id},
-      '#{ @name }', 
-      '#{ @type }',
-      '#{ @image }',
-      #{@store_id}
-     
-      );"
-
-      pet = SqlRunner.run( sql ).first
+    sql = "INSERT INTO pets (name, type, image, store_id) VALUES ('#{ @name }', '#{ @pet_type }', '#{ @image }', #{@store_id} RETURNING *);"
+      pet = SqlRunner.run( sql )
       result = Pet.new( pet )
       return result
   end
@@ -41,14 +28,12 @@ class Pet
                 image = '#{@image}',
                 store_id = '#{@store_id}'
             WHERE id = #{@id}"
-      pet = SqlRunner.run( sql )
-      result = Pet.new( pet )
-      return result      
+      SqlRunner.run( sql ) 
   end
 
   def delete
     sql = "DELETE FROM pets WHERE id = #{@id}"
-    pet = SqlRunner( sql )
+    SqlRunner.run( sql )
   end
 
   def self.all()

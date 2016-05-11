@@ -35,14 +35,12 @@ class Store
                 address = '#{@address}',
                 type = '#{@type}'
             WHERE id = #{@id}"
-      store = SqlRunner.run( sql )
-      result = Store.new( store )
-      return result      
+      SqlRunner.run( sql )   
   end
 
   def delete
     sql = "DELETE FROM stores WHERE id = #{@id}"
-    store = SqlRunner( sql )
+    store = SqlRunner.run( sql )
   end
 
   def self.all()

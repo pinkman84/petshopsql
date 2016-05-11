@@ -8,7 +8,7 @@ CREATE TABLE stores (
 CREATE TABLE pets (
   id serial4 primary key,
   name VARCHAR(255),
-  type VARCHAR(255),
+  pet_type VARCHAR(255),
   image VARCHAR(255),
-  store_id INT2 references stores(id)
+  store_id SERIAL4 references stores(id)
 );
